@@ -33,6 +33,17 @@ const UserSchema = new Schema({
     required: true,
     default: "admin",
   },
+  adminId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    validate: {
+      validator: function (value) {
+        // If role is employee, adminId must be provided
+        return this.role === "employee" ? value !== null : true;
+      },
+      message: "adminId is required for employees"
+    },
+  }
 }, {
   timestamps: true,
 })

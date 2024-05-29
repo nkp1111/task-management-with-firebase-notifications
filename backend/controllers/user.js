@@ -13,11 +13,11 @@ const {
  * @method POST /api/user
  * @param email string
  * @param password string
- * @param role string [admin|employee] admin(default)
- * @param optional {name: {firstName, lastName}, role: admin}
+ * @param optional {name: {firstName, lastName}, phone}
  */
 exports.createUser = async (req, res, next) => {
   try {
+    // validate user input
     const { error, data } = userValidationSchema.safeParse(req.body);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
@@ -39,6 +39,7 @@ exports.createUser = async (req, res, next) => {
 
 
 /**
+ * SUPER_ADMIN ROUTE
  * @desc get all users
  * @method GET /api/user
  */
@@ -60,7 +61,7 @@ exports.getUsers = async (req, res, next) => {
 exports.deleteUser = async (req, res, next) => {
   try {
     // get and validate userId from params
-    const userId = req.params.userId;
+    const { userId = "" } = req.params;
     const { error } = objectIdValidationSchema.safeParse(userId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
@@ -92,7 +93,7 @@ exports.deleteUser = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
   try {
     // get and validate userId from params
-    const { userId } = req.params;
+    const { userId = "" } = req.params;
     const idValidationResult = objectIdValidationSchema.safeParse(userId);
     if (idValidationResult.error) {
       return res.status(StatusCodes.BAD_REQUEST)
@@ -123,7 +124,7 @@ exports.updateUser = async (req, res, next) => {
 exports.getUser = async (req, res, next) => {
   try {
     // get and validate userId from params
-    const userId = req.params.userId;
+    const { userId = "" } = req.params;
     const { error } = objectIdValidationSchema.safeParse(userId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
