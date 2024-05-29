@@ -29,6 +29,15 @@ exports.createUser = async (req, res, next) => {
       return res.status(StatusCodes.CONFLICT)
         .json({ error: "User already exists" });
     }
+
+    // if creating employee, valid admin is required
+    if (data.role === "employee") {
+      const { error } = objectIdValidationSchema.safeParse(data.adminId);
+      if (error) {
+        return res.status(StatusCodes.BAD_REQUEST)
+          .json({ error: "Employee should have valid admin" });
+      }
+    }
     const user = await User.create(data);
     return res.status(StatusCodes.CREATED)
       .json({ message: "User created successfully.", user });

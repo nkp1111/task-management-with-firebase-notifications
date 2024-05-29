@@ -16,6 +16,8 @@ const userValidationSchema = z.object({
     .min(8, "Password must be at least 8 characters long"),
   role: z.enum(["admin", "employee"])
     .default("admin"),
+  adminId: z.string()
+    .optional().regex(/^[0-9a-fA-F]{24}$/),
 });
 
 const objectIdValidationSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId");
