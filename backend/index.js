@@ -4,6 +4,9 @@ const { StatusCodes } = require("http-status-codes");
 
 const { connectMongoDB } = require("./config/mongo-connect");
 const { errorMiddleware } = require("./middleware/error");
+const {
+  UserRouter,
+} = require("./routes");
 
 
 const app = express();
@@ -17,6 +20,7 @@ app.get("/", (req, res) => {
   res.status(StatusCodes.OK)
     .send("Welcome to Task Manager...");
 })
+app.use("/api/user", UserRouter); // user routes
 
 // handle unknown routes
 app.use("*", (req, res) => {
