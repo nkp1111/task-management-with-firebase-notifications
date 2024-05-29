@@ -2,7 +2,8 @@ const express = require("express");
 require("dotenv").config();
 const { StatusCodes } = require("http-status-codes");
 
-const { connectMongoDB } = require("./config/mongo-connect")
+const { connectMongoDB } = require("./config/mongo-connect");
+const { errorMiddleware } = require("./middleware/error");
 
 
 const app = express();
@@ -23,6 +24,8 @@ app.use("*", (req, res) => {
     .send("Page not found");
 })
 
+// handle all uncaught errors from app
+app.use(errorMiddleware);
 
 // start server with db
 const startServer = async () => {
