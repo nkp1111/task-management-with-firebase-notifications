@@ -1,19 +1,17 @@
-import { jwtDecode } from 'jwt-decode';
-import { useCookies } from 'react-cookie';
-
-import { authCookieName } from "../constant/auth"
+import {
+  getValueFromLocalStorage,
+} from "../lib/store"
 
 const useAuth = () => {
-  const [cookies] = useCookies([authCookieName]);
-  const token = cookies.authCookieName;
-  console.log('token from auth', token);
+
+  const result = getValueFromLocalStorage("task_user");
+
   let id = null;
   let role = null;
 
-  if (token) {
-    const decoded = jwtDecode(token);
-    id = decoded._id;
-    role = decoded.role;
+  if (result) {
+    id = result._id;
+    role = result.role;
     return { id, role };
   }
 

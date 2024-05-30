@@ -7,22 +7,20 @@ import { AuthContext } from "../../context/auth-context";
 import { notify } from "../../lib/alert";
 
 export default function LoginForm({ handleFormChange }) {
-  const [showPassword, setShowPassword] = useState({ pass: false, pass2: false });
+  const [showPassword, setShowPassword] = useState({ pass: false });
   const { handleLogin } = useContext(AuthContext);
   const [loginData, setLoginData] = useState({
-    email: "", password: "", confirmPassword: "",
+    email: "", password: ""
   });
   const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    const { email, password, confirmPassword } = loginData;
+    const { email, password } = loginData;
     let errorMessage;
     if (!email) errorMessage = "Please enter email";
     else if (!password) errorMessage = "Please enter password";
-    else if (!confirmPassword) errorMessage = "Please re-enter your password";
-    else if (password !== confirmPassword) errorMessage = "Password does not match";
 
     if (errorMessage) {
       notify(errorMessage, "error");
@@ -36,11 +34,11 @@ export default function LoginForm({ handleFormChange }) {
 
   return (
     <div className="w-full">
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onClick={handleFormSubmit} noValidate>
+      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleFormSubmit} noValidate>
         <p className='mb-6'>
-          Already a member?
+          New member?
           <span className='ms-2 underline cursor-pointer text-primary' onClick={handleFormChange}>
-            log in now
+            Sign up now
           </span>
         </p>
 
@@ -76,26 +74,6 @@ export default function LoginForm({ handleFormChange }) {
             value={loginData.password}
             required />
           <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Password</span>
-        </div>
-
-        <div className="mb-6 relative">
-          <div
-            className='absolute top-0 right-2 h-full w-8 flex justify-center items-center cursor-pointer'
-            onClick={() => setShowPassword((pre) => ({ ...pre, pass2: !pre.pass2 }))}>
-            {showPassword.pass2
-              ? <img src={EyeIcon} />
-              : <img src={CloseEyeIcon} />}
-          </div>
-          <input
-            type={showPassword.pass2 ? "text" : "password"}
-            name={"confirm_password"}
-            placeholder="Confirm Password"
-            className="input input-bordered w-full "
-            onInput={showInputLabel}
-            onChange={(e) => setLoginData(pre => ({ ...pre, confirmPassword: e.target.value }))}
-            value={loginData.confirmPassword}
-            required />
-          <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Confirm Password</span>
         </div>
 
 

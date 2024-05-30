@@ -5,17 +5,24 @@ import {
   login,
   logout,
 } from "../service/auth"
+import {
+  storeValueInLocalStorage,
+  getValueFromLocalStorage,
+  clearValueFromLocalStorage,
+} from "../lib/store"
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
 
   const handleLogin = async (loginData) => {
     try {
       const result = await login(loginData)
-      console.log('login success', result);
-      notify("User login successfully", "success");
+      if (result) {
+        const { message, user } = result;
+        notify(message || "User login successfully", "success");
+        storeValueInLocalStorage("task_user", user);
+      }
     } catch (error) {
       console.log(error, 'login error')
       notify(error || "User login failed", "error");
@@ -24,7 +31,8 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogout = async () => {
     try {
-      await logout()
+      await logout();
+      clearValueFromLocalStorage("task_user")
       notify("User logout successfully", "success");
     } catch (error) {
       notify(error || "User logout failed", "error");
@@ -36,8 +44,6 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        user,
-        setUser,
         handleLogin,
         handleLogout,
       }}>
