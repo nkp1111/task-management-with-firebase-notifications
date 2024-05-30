@@ -9,6 +9,7 @@ import {
 } from "../service/user";
 import {
   storeValueInLocalStorage,
+  getValueFromLocalStorage,
 } from "../lib/store"
 import { localStorageUserKey } from "../constant/auth"
 
@@ -31,6 +32,11 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+
+  useEffect(() => {
+    const user = getValueFromLocalStorage(localStorageUserKey)
+    if (user) setUser(user);
+  }, []);
 
   return (
     <UserContext.Provider
