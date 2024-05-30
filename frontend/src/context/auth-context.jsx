@@ -11,11 +11,13 @@ import {
   clearValueFromLocalStorage,
 } from "../lib/store"
 import { localStorageUserKey } from "../constant/auth"
+import { useNavigate } from 'react-router-dom';
 
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
 
   const handleLogin = async (loginData) => {
     try {
@@ -24,6 +26,11 @@ export const AuthProvider = ({ children }) => {
         const { message, user } = result;
         notify(message || "User login successfully", "success");
         storeValueInLocalStorage(localStorageUserKey, user);
+        if (user.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/employee")
+        }
       }
     } catch (error) {
       console.log(error, 'login error')
