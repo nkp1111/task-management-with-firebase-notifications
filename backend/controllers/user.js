@@ -187,7 +187,7 @@ exports.loginUser = async (req, res, next) => {
     loginUserUsingJWT(user, res);
 
     return res.status(StatusCodes.OK)
-      .json({ message: "User signed in successfully" });
+      .json({ message: "User signed in successfully", user });
   } catch (error) {
     next(error);
   }
