@@ -26,9 +26,12 @@ exports.createEmployees = async (req, res, next) => {
 
     // validate user input
     let { employees = [] } = req.body;
+    let validationErrors = [];
     employees = employees
       .filter(employee => {
-        const { success } = userValidationSchema.safeParse(employee);
+        const { success, error } = userValidationSchema.safeParse(employee);
+        validationErrors.push(error?.issues?.[0]?.message)
+        console.log(error, 'validation faile')
         return success;
       })
       .map(employee => {
@@ -47,12 +50,12 @@ exports.createEmployees = async (req, res, next) => {
     const newEmployees = employees.filter(employee => !existingEmails.includes(employee.email));
     if (newEmployees.length === 0) {
       return res.status(StatusCodes.CONFLICT)
-        .json({ error: "All provided users already exist." });
+        .json({ error: validationErrors.length > 0 ? validationErrors[0] : "All provided users already exist." });
     }
     // add new employees to db
     const employeesAdded = await User.insertMany(newEmployees);
     return res.status(StatusCodes.CREATED)
-      .json({ message: "User created successfully.", employees: employeesAdded });
+      .json({ message: "Employees created successfully.", employeesAdded });
   } catch (error) {
     next(error);
   }
@@ -103,7 +106,6 @@ exports.deleteEmployee = async (req, res, next) => {
 
     // delete employee
     const result = await User.deleteOne({ adminId: userId, _id: employeeId })
-    console.log('Employee delete result', result)
     // if no user deleted
     if (result.deletedCount === 0) {
       return res.status(StatusCodes.NOT_FOUND)

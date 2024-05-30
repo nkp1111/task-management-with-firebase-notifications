@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 import { notify } from "../lib/alert.js";
 import {
@@ -18,7 +18,7 @@ export const EmployeeContext = createContext();
 export const EmployeeProvider = ({ children }) => {
   const [employees, setEmployees] = useState(null);
 
-  const handleCreateEmployees = async (employees = []) => {
+  const handleCreateEmployees = async (newEmployees = []) => {
     try {
       // find admin
       const user = getValueFromLocalStorage(localStorageUserKey);
@@ -32,8 +32,9 @@ export const EmployeeProvider = ({ children }) => {
         return;
       }
       // if admin found
-      const result = await createEmployees(userId, employees);
+      const result = await createEmployees(userId, newEmployees);
       if (result) {
+        setEmployees(pre => ([...pre, ...result.employeesAdded]));
         notify(result.message || "Employees created successfully", "success");
       }
     } catch (error) {
@@ -60,7 +61,6 @@ export const EmployeeProvider = ({ children }) => {
         if (result.employees) setEmployees(result.employees);
         if (showAlert) notify(result.message, "success");
       }
-      console.log('fetch employees result', result);
     } catch (error) {
       console.log(error, 'Employees fetch error')
       notify(error || "Employees fetch failed", "error");
@@ -81,7 +81,9 @@ export const EmployeeProvider = ({ children }) => {
         return;
       }
       const result = await deleteEmployee(userId, employeeId);
-      console.log('delete employees result', result);
+      if (result?.message) {
+        notify(result.message, "success");
+      }
     } catch (error) {
       console.log(error, 'Employee delete error')
       notify(error || "Employee delete failed", "error");
@@ -103,7 +105,9 @@ export const EmployeeProvider = ({ children }) => {
         return;
       }
       const result = await getEmployee(userId, employeeId);
-      console.log('get employee result', result);
+      if (result?.message) {
+        notify(result.message, "success");
+      }
     } catch (error) {
       console.log(error, 'Employee fetch error')
       notify(error || "Employee fetch failed", "error");
@@ -124,8 +128,14 @@ export const EmployeeProvider = ({ children }) => {
         notify("Employee can't perform operation on another employee", "warning");
         return;
       }
+      if (!employeeData.phone) {
+        delete employeeData.phone;
+      }
       const result = await updateEmployee(userId, employeeId, employeeData);
-      console.log('update employee result', result);
+      if (result.message) {
+        notify(result.message, "success");
+        handleFetchEmployees(false);
+      }
     } catch (error) {
       console.log(error, 'Employee update error')
       notify(error || "Employee update failed", "error");

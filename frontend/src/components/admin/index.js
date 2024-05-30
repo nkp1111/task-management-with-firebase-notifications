@@ -1,5 +1,5 @@
-import EmployeeManager from "./employee-manager.tsx";
-import TicketManager from "./ticket-manager.tsx";
+import EmployeeManager from "./employee-manager";
+import TicketManager from "./ticket-manager";
 
 export {
   EmployeeManager,
