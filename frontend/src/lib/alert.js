@@ -10,17 +10,17 @@ export const notify = (message, action = "") => {
       break;
     case "error":
       toast.error(message, {
-        position: "top-left"
+        position: "top-center"
       });
       break;
     case "warning":
       toast.warn(message, {
-        position: "bottom-left"
+        position: "top-center"
       });
       break;
     case "info":
       toast.info(message, {
-        position: "bottom-center"
+        position: "top-center"
       });
       break;
     default:

@@ -13,7 +13,7 @@ export default {
   plugins: [daisyui],
   daisyui: {
     themes: [
-      "sunset",
+      "lofi",
       // "light",
     ],
   },

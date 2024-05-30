@@ -4,7 +4,7 @@ import {
 import { Routes, Route } from "react-router-dom";
 
 import RequireAuth from "./components/auth-check";
-import Login from "./pages/login";
+import Auth from "./pages/auth";
 import Admin from "./pages/admin";
 
 
@@ -13,7 +13,7 @@ export default function AllRoutes() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Auth />} />
 
           {/* Checks if user logged in or not */}
           <Route element={<RequireAuth />}>
