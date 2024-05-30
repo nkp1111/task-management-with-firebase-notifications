@@ -145,7 +145,9 @@ exports.updateEmployee = async (req, res, next) => {
         .json({ error: employeeDataError });
     }
     // update employee
-    const result = await User.findOneAndUpdate({ adminId: userId, _id: employeeId }, { $set: { ...data } })
+    const result = await User.findOneAndUpdate({ adminId: userId, _id: employeeId }, { $set: { ...data } });
+    return res.status(StatusCodes.OK)
+      .json({ message: "Employee updated successfully." });
   } catch (error) {
     next(error);
   }

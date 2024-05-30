@@ -34,7 +34,7 @@ const UserSchema = new Schema({
     default: "admin",
   },
   adminId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User",
     validate: {
       validator: function (value) {
