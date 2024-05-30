@@ -10,6 +10,7 @@ import {
 import {
   storeValueInLocalStorage,
 } from "../lib/store"
+import { localStorageUserKey } from "../constant/auth"
 
 export const UserContext = createContext();
 
@@ -21,7 +22,7 @@ export const UserProvider = ({ children }) => {
       const result = await createUser(userData);
       if (result) {
         const { message = "", user } = result;
-        storeValueInLocalStorage("task_user", user);
+        storeValueInLocalStorage(localStorageUserKey, user);
         notify(message || "User signed up successfully", "success");
       }
     } catch (error) {

@@ -6,7 +6,6 @@ const AUTH_URL = serverUrl + "/api/user/auth"
 
 export const login = async (body) => {
   try {
-    console.log(AUTH_URL, body)
     const response = await axios.post(`${AUTH_URL}/`, body, {
       withCredentials: true, // To include cookies
     });

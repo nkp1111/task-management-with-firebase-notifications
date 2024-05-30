@@ -10,6 +10,8 @@ import {
   getValueFromLocalStorage,
   clearValueFromLocalStorage,
 } from "../lib/store"
+import { localStorageUserKey } from "../constant/auth"
+
 
 export const AuthContext = createContext();
 
@@ -21,7 +23,7 @@ export const AuthProvider = ({ children }) => {
       if (result) {
         const { message, user } = result;
         notify(message || "User login successfully", "success");
-        storeValueInLocalStorage("task_user", user);
+        storeValueInLocalStorage(localStorageUserKey, user);
       }
     } catch (error) {
       console.log(error, 'login error')
@@ -32,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   const handleLogout = async () => {
     try {
       await logout();
-      clearValueFromLocalStorage("task_user")
+      clearValueFromLocalStorage(localStorageUserKey)
       notify("User logout successfully", "success");
     } catch (error) {
       notify(error || "User logout failed", "error");
