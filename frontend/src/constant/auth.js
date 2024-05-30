@@ -1,0 +1,1 @@
+export const authCookieName = import.meta.env.AUTH_COOKIE_NAME || "store-nest-main";
