@@ -7,6 +7,8 @@ const { connectMongoDB } = require("./config/mongo-connect");
 const { errorMiddleware } = require("./middleware/error");
 const {
   UserRouter,
+  EmployeeRouter,
+  TicketRouter,
 } = require("./routes");
 
 
@@ -22,7 +24,9 @@ app.get("/", (req, res) => {
   res.status(StatusCodes.OK)
     .send("Welcome to Task Manager...");
 })
+app.use("/api/user/:userId/employees", EmployeeRouter); // employee routes
 app.use("/api/user", UserRouter); // user routes
+app.use("/api/ticket", TicketRouter); // ticket routes
 
 // handle unknown routes
 app.use("*", (req, res) => {

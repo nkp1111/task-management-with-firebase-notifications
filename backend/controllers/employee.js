@@ -120,10 +120,10 @@ exports.deleteEmployee = async (req, res, next) => {
 
 
 /**
- * @desc update user by id
+ * @desc update employee by id
  * @method PATCH /api/user/:userId/employees/:employeeId
  */
-exports.updateUser = async (req, res, next) => {
+exports.updateEmployee = async (req, res, next) => {
   try {
     // get and validate userId from params
     const { userId, employeeId } = req.params;

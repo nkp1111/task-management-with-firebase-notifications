@@ -1,20 +1,20 @@
 const router = require("express").Router({ mergeParams: true });
 
 const {
-  createUser,
-  getUsers,
-  deleteUser,
-  updateUser,
-  getUser,
-} = require("../controllers/user");
+  createTicket,
+  updateTicket,
+  getTicketById,
+  getTickets,
+  deleteTicket,
+} = require("../controllers/ticket");
 
 const { isValidUser } = require("../middleware/valid-user");
 const { isUserAuthorized } = require("../middleware/user-permission")
 
-router.route("/").get(getUsers).post(createUser);
+router.route("/").get(getTickets).post(createTicket);
 
 
 router.use(isValidUser, isUserAuthorized);
-router.route("/:userId").get(getUser).patch(updateUser).delete(deleteUser);
+router.route("/:ticketId").get(getTicketById).patch(updateTicket).delete(deleteTicket);
 
 module.exports = router;
