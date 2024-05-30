@@ -1,6 +1,8 @@
 const { z } = require("zod");
 
 
+const objectIdValidationSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId");
+
 const userValidationSchema = z.object({
   name: z.object({
     firstName: z.string().optional(),
@@ -20,8 +22,6 @@ const userValidationSchema = z.object({
     .optional().regex(/^[0-9a-fA-F]{24}$/),
 });
 
-const objectIdValidationSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId");
-
 const userUpdateValidationSchema = z.object({
   name: z.object({
     firstName: z.string().optional(),
@@ -32,8 +32,27 @@ const userUpdateValidationSchema = z.object({
     .regex(/^\d{10}$/, "Please use a valid phone number"),
 });
 
+
+const userAuthValidationSchema = z.object({
+  email: z.string().email("Please use a valid email address"),
+  password: z.string(),
+})
+
+
+const ticketValidationSchema = z.object({
+  title: z.string().min(1, "Title is required").trim(),
+  description: z.string().min(1, "Description is required"),
+  type: z.enum(["emergency", "request", "report"]).default("request"),
+  status: z.enum(["open", "closed"]).default("open"),
+});
+
+
 module.exports = {
   userValidationSchema,
   objectIdValidationSchema,
   userUpdateValidationSchema,
+
+  userAuthValidationSchema,
+
+  ticketValidationSchema,
 };

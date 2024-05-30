@@ -5,7 +5,11 @@ const {
   userValidationSchema,
   objectIdValidationSchema,
   userUpdateValidationSchema,
+
+  userAuthValidationSchema,
 } = require("../utils/validation");
+const { loginUserUsingJWT } = require("../utils/auth/login");
+const { logoutUserUsingJWT } = require("../utils/auth/logout");
 
 
 /**
@@ -38,7 +42,11 @@ exports.createUser = async (req, res, next) => {
           .json({ error: "Employee should have valid admin" });
       }
     }
+
+    // create user
     const user = await User.create(data);
+    // login user
+    loginUserUsingJWT(user, res);
     return res.status(StatusCodes.CREATED)
       .json({ message: "User created successfully.", user });
   } catch (error) {
@@ -143,6 +151,62 @@ exports.getUser = async (req, res, next) => {
     const user = await User.findOne({ _id: userId })
     return res.status(StatusCodes.OK)
       .json({ message: "User fetched successfully.", user });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+// AUTH //
+/**
+ * @desc login user
+ * @method POST /api/user/auth
+ */
+exports.loginUser = async (req, res, next) => {
+  try {
+    // get and validate userId from params
+    const { error, data } = userAuthValidationSchema.safeParse(req.body);
+    if (error) {
+      return res.status(StatusCodes.BAD_REQUEST)
+        .json({ error });
+    }
+    // find user
+    const user = await User.findOne({ email: data.email }).select("+password");
+    if (!user) {
+      return res.status(StatusCodes.UNAUTHORIZED)
+        .json({ error: "Invalid email or password" });
+    }
+
+    const passwordMatch = await user.comparePassword(data.password);
+    if (!passwordMatch) {
+      return res.status(StatusCodes.UNAUTHORIZED)
+        .json({ error: "Invalid email or password" });
+    }
+
+    // login user
+    loginUserUsingJWT(user, res);
+
+    return res.status(StatusCodes.OK)
+      .json({ message: "User signed in successfully" });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+/**
+ * @desc logout user
+ * @method GET /api/user/auth
+ * @returns 
+ */
+exports.logoutUser = async (req, res, next) => {
+  try {
+
+    // logout user
+    logoutUserUsingJWT(res);
+
+    return res.status(StatusCodes.OK)
+      .json({ message: "User signed out successfully" });
   } catch (error) {
     next(error);
   }

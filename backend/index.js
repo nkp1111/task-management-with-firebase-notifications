@@ -1,6 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 const { StatusCodes } = require("http-status-codes");
+const cookieParser = require("cookie-parser");
 
 const { connectMongoDB } = require("./config/mongo-connect");
 const { errorMiddleware } = require("./middleware/error");
@@ -14,6 +15,7 @@ const port = process.env.PORT || 3000;
 
 // middleware
 app.use(express.json());
+app.use(cookieParser());
 
 // routes
 app.get("/", (req, res) => {
