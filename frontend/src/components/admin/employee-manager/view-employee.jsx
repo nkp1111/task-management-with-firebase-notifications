@@ -1,9 +1,9 @@
 import { useState, useContext } from 'react'
-import DeleteIcon from "../../assets/delete-trash.svg";
-import EditPencilIcon from "../../assets/edit-pencil.svg";
-import { showInputLabel } from "../../lib/form.js";
+import DeleteIcon from "../../../assets/delete-trash.svg";
+import EditPencilIcon from "../../../assets/edit-pencil.svg";
+import { showInputLabel } from "../../../lib/form";
 
-import { EmployeeContext } from "../../context/employee-context.jsx";
+import { EmployeeContext } from "../../../context/employee-context.jsx";
 
 
 export default function ViewEmployee() {

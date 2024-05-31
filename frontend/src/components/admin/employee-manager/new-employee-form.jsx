@@ -1,8 +1,8 @@
 import { useState, useContext } from 'react'
-import EyeIcon from "../../assets/open-eye.svg";
-import CloseEyeIcon from "../../assets/close-eye.svg";
-import { showInputLabel } from "../../lib/form.js";
-import { EmployeeContext } from "../../context/employee-context.jsx";
+import EyeIcon from "../../../assets/open-eye.svg";
+import CloseEyeIcon from "../../../assets/close-eye.svg";
+import { showInputLabel } from "../../../lib/form";
+import { EmployeeContext } from "../../../context/employee-context.jsx";
 
 export default function NewEmployeeForm() {
 
@@ -51,7 +51,7 @@ export default function NewEmployeeForm() {
   };
 
   return (
-    <form className="bg-white shadow-md rounded sm:px-8 px-2 mb-4 md:w-1/3 w-[90%] md:mx-0 mx-auto" onSubmit={(e) => handleAddEmployee(e, newEmployeeLocal)} noValidate>
+    <form className="bg-white shadow-md rounded sm:pe-8 pe-2 mb-4 md:w-1/3 w-[90%] md:mx-0 mx-auto" onSubmit={(e) => handleAddEmployee(e, newEmployeeLocal)} noValidate>
       <h3 className="mb-6 underline">Add New Employee</h3>
 
       <div className="grid gap-6 md:grid-cols-2">
