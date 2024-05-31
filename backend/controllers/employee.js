@@ -1,11 +1,22 @@
 const { User } = require("../model");
 const { StatusCodes } = require("http-status-codes");
+const { hash } = require("bcrypt");
 
 const {
   userValidationSchema,
   objectIdValidationSchema,
   userUpdateValidationSchema,
 } = require("../utils/validation");
+
+
+async function hashPasswords(employees) {
+  return Promise.all(employees.map(async (employee) => {
+    if (employee.password) {
+      employee.password = await hash(employee.password, 10);
+    }
+    return employee;
+  }));
+}
 
 
 /**
@@ -52,7 +63,8 @@ exports.createEmployees = async (req, res, next) => {
         .json({ error: validationErrors.length > 0 ? validationErrors[0] : "All provided users already exist." });
     }
     // add new employees to db
-    const employeesAdded = await User.insertMany(newEmployees);
+    const employeesWithHashedPasswords = await hashPasswords(newEmployees);
+    const employeesAdded = await User.insertMany(employeesWithHashedPasswords);
     return res.status(StatusCodes.CREATED)
       .json({ message: "Employees created successfully.", employeesAdded });
   } catch (error) {
