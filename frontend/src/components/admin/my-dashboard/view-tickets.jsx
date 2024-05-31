@@ -7,6 +7,8 @@ import { TicketContext } from "../../../context/ticket-context.jsx";
 
 
 export default function ViewTickets() {
+
+  const [showMyTicket, setShowMyTicket] = useState(true);
   const {
     handleDeleteTicket,
     handleGetTicket,
@@ -37,9 +39,18 @@ export default function ViewTickets() {
     })
   }
 
+  const ticketsToShow = showMyTicket ? userTickets : employeesTickets;
+
   return (
     <article className='w-[90%] md:mx-0 mx-auto sm:px-8 px-2'>
-      <h3 className='mb-6 underline'>My tickets</h3>
+      <div className="flex justify-start gap-2 mb-6">
+        <h3 className={`${showMyTicket ? "underline" : "cursor-pointer"}`}
+          onClick={() => !showMyTicket && setShowMyTicket(true)}
+        >My tickets</h3>
+        <h4 className={`${showMyTicket ? "cursor-pointer" : "underline"}`}
+          onClick={() => showMyTicket && setShowMyTicket(false)}
+        >Employee tickets</h4>
+      </div>
 
       <div className="overflow-x-auto">
         <table className="table">
@@ -55,7 +66,7 @@ export default function ViewTickets() {
             </tr>
           </thead>
           <tbody>
-            {userTickets?.map((ticket, index) => (
+            {ticketsToShow?.map((ticket, index) => (
               <tr key={ticket._id} className={`${ticket.type === "emergency" ? "bg-red-50" : ticket.type === "report" ? "bg-blue-50" : "bg-green-50"}`}>
                 <th>{index + 1}</th>
                 <td>{ticket.title} </td>
