@@ -124,7 +124,7 @@ exports.updateUser = async (req, res, next) => {
     }
 
     // delete user
-    const result = await User.findOneAndUpdate({ _id: userId }, { $set: { ...data } })
+    const result = await User.findOneAndUpdate({ _id: userId }, { ...data })
     console.log('user update result', result)
     return res.status(StatusCodes.OK)
       .json({ message: "User updated successfully." });

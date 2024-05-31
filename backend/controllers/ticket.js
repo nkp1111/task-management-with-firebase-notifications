@@ -161,7 +161,7 @@ exports.updateTicket = async (req, res, next) => {
     // user ticket
     if (ticket.createdBy === userId) {
       // update ticket
-      const updateResult = await Ticket.updateOne({ _id: ticketId }, { $set: { ...data } });
+      const updateResult = await Ticket.updateOne({ _id: ticketId }, { ...data });
       console.log("ticket update result", updateResult);
       return res.status(StatusCodes.OK)
         .json({ message: "Ticket updated successfully" });
@@ -172,7 +172,7 @@ exports.updateTicket = async (req, res, next) => {
       const ticketOwner = await User.findOne({ _id: ticket.createdBy });
       if (ticketOwner.role === "employee" && ticketOwner.adminId === userId) {
         // employee ticket confirmed
-        const updateResult = await Ticket.updateOne({ _id: ticketId }, { $set: { ...data } });
+        const updateResult = await Ticket.updateOne({ _id: ticketId }, { ...data });
         console.log("ticket update result", updateResult);
         return res.status(StatusCodes.OK)
           .json({ message: "Ticket updated successfully" });
