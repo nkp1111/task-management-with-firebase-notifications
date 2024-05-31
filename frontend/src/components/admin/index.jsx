@@ -21,7 +21,7 @@ const Admin = () => {
             onClick={() => setViewMyDashboard(false)}>Employee Manager</a>
         </div>
       </div>
-      <div className='flex md:flex-row flex-col gap-2 sm:px-8 px-2 items-start'>
+      <div className='flex md:flex-row flex-col gap-2 sm:px-8 px-2 w-full'>
         {viewMyDashboard ? <MyDashboard /> : <EmployeeManager />}
       </div>
     </section>

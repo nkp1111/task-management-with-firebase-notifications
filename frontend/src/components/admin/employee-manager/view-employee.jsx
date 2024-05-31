@@ -13,7 +13,6 @@ export default function ViewEmployee() {
     handleUpdateEmployee,
   } = useContext(EmployeeContext);
 
-  console.log(employees)
   const [employeeUpdateData, setEmployeeUpdateData] = useState({
     name: { firstName: "", lastName: "" },
     phone: "",

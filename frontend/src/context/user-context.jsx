@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 import { notify } from "../lib/alert.js";
 import {
@@ -32,6 +32,34 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+  const handleUpdateUser = async (userId, userData) => {
+    try {
+      const result = await updateUser(userId, userData);
+      if (result) {
+        const { message = "", user } = result;
+        notify(message || "User updated successfully", "success");
+        await handleGetUser(userId);
+      }
+    } catch (error) {
+      console.log(error, 'user updated error')
+      notify(error || "User update failed", "error");
+    }
+  }
+
+
+  const handleGetUser = async (userId) => {
+    try {
+      const result = await getUserById(userId);
+      if (result) {
+        const { message = "", user } = result;
+        storeValueInLocalStorage(localStorageUserKey, user);
+        setUser(user);
+      }
+    } catch (error) {
+      console.log(error, 'user updated error')
+      notify(error || "User update failed", "error");
+    }
+  }
 
   useEffect(() => {
     const user = getValueFromLocalStorage(localStorageUserKey)
@@ -44,6 +72,7 @@ export const UserProvider = ({ children }) => {
         user,
         setUser,
         handleCreateUser,
+        handleUpdateUser,
       }}>
       {children}
     </UserContext.Provider>
