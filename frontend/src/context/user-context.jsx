@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
 import { notify } from "../lib/alert.js";
 import {
@@ -16,6 +17,8 @@ import { localStorageUserKey } from "../constant/auth"
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
+
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
   const handleCreateUser = async (userData) => {
@@ -25,6 +28,11 @@ export const UserProvider = ({ children }) => {
         const { message = "", user } = result;
         storeValueInLocalStorage(localStorageUserKey, user);
         notify(message || "User signed up successfully", "success");
+        if (user.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/employee")
+        }
       }
     } catch (error) {
       console.log(error, 'user create error')
