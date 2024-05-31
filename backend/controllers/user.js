@@ -87,7 +87,7 @@ exports.deleteUser = async (req, res, next) => {
 
     // delete user
     const result = await User.deleteOne({ _id: userId })
-    console.log('User delete result', result)
+    // console.log('User delete result', result)
     // if no user deleted
     if (result.deletedCount === 0) {
       return res.status(StatusCodes.NOT_FOUND)
@@ -125,7 +125,7 @@ exports.updateUser = async (req, res, next) => {
 
     // delete user
     const result = await User.findOneAndUpdate({ _id: userId }, { ...data })
-    console.log('user update result', result)
+    // console.log('user update result', result)
     return res.status(StatusCodes.OK)
       .json({ message: "User updated successfully." });
   } catch (error) {

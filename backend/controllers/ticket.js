@@ -1,8 +1,9 @@
 const { Ticket, User } = require("../model");
-const { StatusCodes } = require("http-status-codes");
+const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 
 const {
   ticketValidationSchema,
+  objectIdValidationSchema,
 } = require("../utils/validation");
 
 
@@ -90,14 +91,14 @@ exports.deleteTicket = async (req, res, next) => {
 
     // check permission
     // user ticket
-    if (ticket.createdBy === userId) {
+    if (ticket.createdBy.toString() === userId) {
       // delete ticket
       await Ticket.deleteOne({ _id: ticketId });
       return res.status(StatusCodes.OK)
         .json({ message: "Ticket deleted successfully" });
     }
     // not belong to user
-    else if (ticket.createdBy !== userId && user.role === "admin") {
+    else if (ticket.createdBy.toString() !== userId && user.role === "admin") {
       // check employee ticket
       const ticketOwner = await User.findOne({ _id: ticket.createdBy });
       if (ticketOwner.role === "employee" && ticketOwner.adminId === userId) {
@@ -159,21 +160,21 @@ exports.updateTicket = async (req, res, next) => {
 
     // check permission
     // user ticket
-    if (ticket.createdBy === userId) {
+    if (ticket.createdBy.toString() === userId) {
       // update ticket
       const updateResult = await Ticket.updateOne({ _id: ticketId }, { ...data });
-      console.log("ticket update result", updateResult);
+      // console.log("ticket update result", updateResult);
       return res.status(StatusCodes.OK)
         .json({ message: "Ticket updated successfully" });
     }
     // not belong to user
-    else if (ticket.createdBy !== userId && user.role === "admin") {
+    else if (ticket.createdBy.toString() !== userId && user.role === "admin") {
       // check employee ticket
       const ticketOwner = await User.findOne({ _id: ticket.createdBy });
       if (ticketOwner.role === "employee" && ticketOwner.adminId === userId) {
         // employee ticket confirmed
         const updateResult = await Ticket.updateOne({ _id: ticketId }, { ...data });
-        console.log("ticket update result", updateResult);
+        // console.log("ticket update result", updateResult);
         return res.status(StatusCodes.OK)
           .json({ message: "Ticket updated successfully" });
       }
@@ -222,13 +223,13 @@ exports.getTicketById = async (req, res, next) => {
 
     // check permission
     // user ticket
-    if (ticket.createdBy === userId) {
+    if (ticket.createdBy.toString() === userId) {
       // return ticket
       return res.status(StatusCodes.OK)
         .json({ message: "Ticket fetched successfully", ticket });
     }
     // not belong to user
-    else if (ticket.createdBy !== userId && user.role === "admin") {
+    else if (ticket.createdBy.toString() !== userId && user.role === "admin") {
       // check employee ticket
       const ticketOwner = await User.findOne({ _id: ticket.createdBy });
       if (ticketOwner.role === "employee" && ticketOwner.adminId === userId) {

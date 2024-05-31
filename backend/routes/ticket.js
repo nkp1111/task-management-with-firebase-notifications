@@ -11,10 +11,12 @@ const {
 const { isValidUser } = require("../middleware/valid-user");
 const { isUserAuthorized } = require("../middleware/user-permission")
 
+router.use(isValidUser);
 router.route("/").get(getTickets).post(createTicket);
 
-
-router.use(isValidUser, isUserAuthorized);
-router.route("/:ticketId").get(getTicketById).patch(updateTicket).delete(deleteTicket);
+router.route("/:ticketId")
+  .get(isUserAuthorized, getTicketById)
+  .patch(isUserAuthorized, updateTicket)
+  .delete(isUserAuthorized, deleteTicket);
 
 module.exports = router;

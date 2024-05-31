@@ -31,7 +31,6 @@ exports.createEmployees = async (req, res, next) => {
       .filter(employee => {
         const { success, error } = userValidationSchema.safeParse(employee);
         validationErrors.push(error?.issues?.[0]?.message)
-        console.log(error, 'validation faile')
         return success;
       })
       .map(employee => {

@@ -36,6 +36,6 @@ exports.isValidUser = (req, res, next) => {
 
   } catch (error) {
     return res.status(StatusCodes.UNAUTHORIZED)
-      .json({ message: ReasonPhrases.UNAUTHORIZED });
+      .send(`${ReasonPhrases.UNAUTHORIZED}: you do not have permission to access`);
   }
 }
