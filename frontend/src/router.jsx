@@ -9,6 +9,7 @@ import Admin from "./pages/admin";
 import { AuthProvider } from "./context/auth-context"
 import { UserProvider } from "./context/user-context";
 import { EmployeeProvider } from "./context/employee-context";
+import { TicketProvider } from "./context/ticket-context"
 
 
 export default function AllRoutes() {
@@ -18,15 +19,17 @@ export default function AllRoutes() {
         <AuthProvider>
           <UserProvider>
             <EmployeeProvider>
-              <Routes>
-                <Route path="/" element={<Auth />} />
+              <TicketProvider>
+                <Routes>
+                  <Route path="/" element={<Auth />} />
 
-                {/* Checks if user logged in or not */}
-                <Route element={<RequireAuth />}>
-                  {/* protected routes defined here  */}
-                  <Route path="/admin" element={<Admin />} />
-                </Route>
-              </Routes>
+                  {/* Checks if user logged in or not */}
+                  <Route element={<RequireAuth />}>
+                    {/* protected routes defined here  */}
+                    <Route path="/admin" element={<Admin />} />
+                  </Route>
+                </Routes>
+              </TicketProvider>
             </EmployeeProvider>
           </UserProvider>
         </AuthProvider>

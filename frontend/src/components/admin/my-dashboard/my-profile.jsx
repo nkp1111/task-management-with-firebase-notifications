@@ -9,7 +9,7 @@ export default function MyProfile({ user, handleUpdateUser }) {
   });
 
   return (
-    <div className="card md:w-1/3 w-full flex-1 bg-base-100 shadow-xl">
+    <div className="card lg:w-1/3 md:w-1/2 w-full flex-1 bg-base-100 shadow-xl my-3">
       <div className="card-body justify-between flex-row">
         <div>
           <h2 className="card-title capitalize">{user?.name?.firstName} {user?.name?.lastName}</h2>

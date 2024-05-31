@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      console.log(error, 'login error')
+      // console.log(error, 'login error')
       notify(error || "User login failed", "error");
     }
   }
