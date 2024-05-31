@@ -6,13 +6,11 @@ import { showInputLabel } from "../../../lib/form";
 import { TicketContext } from "../../../context/ticket-context.jsx";
 
 
-export default function ViewTickets() {
+export default function ViewTickets({ user }) {
 
   const [showMyTicket, setShowMyTicket] = useState(true);
   const {
     handleDeleteTicket,
-    handleGetTicket,
-    handleGetTickets,
     handleUpdateTicket,
     employeesTickets,
     userTickets,
@@ -44,12 +42,19 @@ export default function ViewTickets() {
   return (
     <article className='w-[90%] md:mx-0 mx-auto sm:px-8 px-2'>
       <div className="flex justify-start gap-2 mb-6">
-        <h3 className={`${showMyTicket ? "underline" : "cursor-pointer"}`}
-          onClick={() => !showMyTicket && setShowMyTicket(true)}
-        >My tickets</h3>
-        <h4 className={`${showMyTicket ? "cursor-pointer" : "underline"}`}
-          onClick={() => showMyTicket && setShowMyTicket(false)}
-        >Employee tickets</h4>
+
+        {user?.role === "admin" ? (
+          <>
+            <h3 className={`${showMyTicket ? "underline" : "cursor-pointer"}`}
+              onClick={() => !showMyTicket && setShowMyTicket(true)}
+            >My tickets</h3>
+            <h4 className={`${showMyTicket ? "cursor-pointer" : "underline"}`}
+              onClick={() => showMyTicket && setShowMyTicket(false)}
+            >Employee tickets</h4>
+          </>
+        ) : (
+          <h3 className="underline">My tickets</h3>
+        )}
       </div>
 
       <div className="overflow-x-auto">

@@ -11,7 +11,7 @@ const Admin = () => {
 
   const { handleLogout } = useContext(AuthContext);
   if (!user) {
-    return <div>Loading...</div>;
+    return <div className="text-center mt-10 text-xl">Loading...</div>;
   }
 
   const fullName = `${user?.name?.firstName || ""} ${user?.name?.lastName || ""}`.trim();
@@ -33,7 +33,7 @@ const Admin = () => {
               onClick={() => setViewMyDashboard(false)}>Employee Manager</a>
           </div>
         ) : (
-          <div>My dashboard</div>
+          <div className="mx-auto">My dashboard</div>
         )}
       </div>
 

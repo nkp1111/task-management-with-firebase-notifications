@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
       await logout();
       clearValueFromLocalStorage(localStorageUserKey)
       notify("User logout successfully", "success");
-      navigate("/login")
+      navigate("/")
     } catch (error) {
       notify(typeof error === "string" ? error : (error.error || "User logout failed"), "error");
     }

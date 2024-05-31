@@ -34,12 +34,16 @@ export const EmployeeProvider = ({ children }) => {
       // if admin found
       const result = await createEmployees(userId, newEmployees);
       if (result) {
+        if (result.error) {
+          notify(result.error, "error")
+          return;
+        }
         setEmployees(pre => ([...pre, ...result.employeesAdded]));
         notify(result.message || "Employees created successfully", "success");
       }
     } catch (error) {
       console.log(error, 'Employee create error')
-      notify(error || "Employee create failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "Employee create failed"), "error");
     }
   }
 
@@ -57,6 +61,10 @@ export const EmployeeProvider = ({ children }) => {
         return;
       }
       const result = await getEmployees(userId);
+      if (result.error) {
+        notify(result.error, "error");
+        return;
+      }
       if (result.message) {
         if (result.employees) setEmployees(result.employees);
         if (showAlert) notify(result.message, "success");
