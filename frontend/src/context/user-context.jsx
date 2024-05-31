@@ -36,7 +36,7 @@ export const UserProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error, 'user create error')
-      notify(error || "User create failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "User create failed"), "error");
     }
   }
 
@@ -50,7 +50,7 @@ export const UserProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error, 'user updated error')
-      notify(error || "User update failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "User update failed"), "error");
     }
   }
 
@@ -65,7 +65,7 @@ export const UserProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error, 'user updated error')
-      notify(error || "User update failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "User update failed"), "error");
     }
   }
 

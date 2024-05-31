@@ -23,18 +23,19 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await login(loginData)
       if (result) {
-        const { message, user } = result;
+        const { message, user, error } = result;
+        if (error) {
+          notify(error, "error");
+          return;
+        }
         notify(message || "User login successfully", "success");
         storeValueInLocalStorage(localStorageUserKey, user);
-        if (user.role === "admin") {
-          navigate("/admin");
-        } else {
-          navigate("/employee")
-        }
+        navigate("/admin");
+
       }
     } catch (error) {
       // console.log(error, 'login error')
-      notify(error || "User login failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "User login failed"), "error");
     }
   }
 
@@ -43,8 +44,9 @@ export const AuthProvider = ({ children }) => {
       await logout();
       clearValueFromLocalStorage(localStorageUserKey)
       notify("User logout successfully", "success");
+      navigate("/login")
     } catch (error) {
-      notify(error || "User logout failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "User logout failed"), "error");
     }
   }
 

@@ -63,7 +63,7 @@ export const EmployeeProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error, 'Employees fetch error')
-      notify(error || "Employees fetch failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "Employees fetch failed"), "error");
     }
   };
 
@@ -86,7 +86,7 @@ export const EmployeeProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error, 'Employee delete error')
-      notify(error || "Employee delete failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "Employee delete failed"), "error");
     }
   };
 
@@ -110,7 +110,7 @@ export const EmployeeProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error, 'Employee fetch error')
-      notify(error || "Employee fetch failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "Employee fetch failed"), "error");
     }
   };
 
@@ -138,7 +138,7 @@ export const EmployeeProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error, 'Employee update error')
-      notify(error || "Employee update failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "Employee update failed"), "error");
     }
   };
 

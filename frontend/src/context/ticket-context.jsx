@@ -26,7 +26,7 @@ export const TicketProvider = ({ children }) => {
       }
     } catch (error) {
       // console.log(error, 'login error')
-      notify(error || "User login failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "User login failed"), "error");
     }
   }
 
@@ -46,7 +46,7 @@ export const TicketProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      notify(error || "User logout failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "User logout failed"), "error");
     }
   }
 
@@ -67,7 +67,7 @@ export const TicketProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      notify(error || "User logout failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "User logout failed"), "error");
     }
   }
 
@@ -84,7 +84,7 @@ export const TicketProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      notify(error || "User logout failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "User logout failed"), "error");
     }
   }
 
@@ -107,7 +107,7 @@ export const TicketProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      notify(error || "User logout failed", "error");
+      notify(typeof error === "string" ? error : (error.error || "User logout failed"), "error");
     }
   }
 
