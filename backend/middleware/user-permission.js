@@ -3,7 +3,7 @@ const {
   StatusCodes,
 } = require("http-status-codes");
 
-const { User, Ticket } = require("../model")
+const { User, Ticket, Meeting } = require("../model")
 
 
 exports.isUserAuthorized = async (req, res, next) => {
@@ -16,7 +16,8 @@ exports.isUserAuthorized = async (req, res, next) => {
     }
 
     // to access
-    const { userId: accessUserId, employeeId: accessEmployeeId, ticketId } = req.params;
+    const { userId: accessUserId, employeeId: accessEmployeeId, ticketId, meetingId } = req.params;
+    console.log(accessUserId, userId, role)
     // console.log('validating ticket id', ticketId);
     // diff admin account
     if (role === "admin") {
@@ -37,6 +38,22 @@ exports.isUserAuthorized = async (req, res, next) => {
         return res.status(StatusCodes.UNAUTHORIZED)
           .json({ message: ReasonPhrases.UNAUTHORIZED });
       }
+      else if (meetingId) {
+        const meeting = await Meeting.findOne({ _id: meetingId });
+        // console.log(meeting.createdBy, userId)
+        // if meeting creator
+        if (meeting.createdBy.toString() === userId) {
+          return next();
+        } else {
+          // if his employee is meeting creator
+          const meetingCreatorEmployee = await User.findOne({ _id: meeting.createdBy, role: "employee", adminId: userId });
+          if (meetingCreatorEmployee) {
+            return next();
+          }
+        }
+        return res.status(StatusCodes.UNAUTHORIZED)
+          .json({ message: ReasonPhrases.UNAUTHORIZED });
+      }
       else if (userId !== accessUserId) {
         return res.status(StatusCodes.UNAUTHORIZED)
           .json({ message: ReasonPhrases.UNAUTHORIZED });
@@ -48,6 +65,8 @@ exports.isUserAuthorized = async (req, res, next) => {
             .json({ message: ReasonPhrases.UNAUTHORIZED });
         }
       }
+
+      return next();
     }
     // diff employee account
     if (role === "employee") {
@@ -60,10 +79,21 @@ exports.isUserAuthorized = async (req, res, next) => {
             .json({ message: ReasonPhrases.UNAUTHORIZED });
         }
       }
+      else if (meetingId) {
+        const meeting = await Meeting.findOne({ _id: meetingId });
+        if (meeting && meeting.createdBy.toString() === userId) {
+          return next();
+        } else {
+          return res.status(StatusCodes.UNAUTHORIZED)
+            .json({ message: ReasonPhrases.UNAUTHORIZED });
+        }
+      }
       if (userId !== accessUserId) {
         return res.status(StatusCodes.UNAUTHORIZED)
           .json({ message: ReasonPhrases.UNAUTHORIZED });
       }
+
+      return next();
     }
 
     return res.status(StatusCodes.UNAUTHORIZED)

@@ -10,6 +10,7 @@ const {
   UserRouter,
   EmployeeRouter,
   TicketRouter,
+  MeetingRouter,
 } = require("./routes");
 
 
@@ -44,6 +45,7 @@ app.get("/", (req, res) => {
 app.use("/api/user/:userId/employees", EmployeeRouter); // employee routes
 app.use("/api/user", UserRouter); // user routes
 app.use("/api/ticket", TicketRouter); // ticket routes
+app.use("/api/meeting", MeetingRouter); // meeting routes
 
 // handle unknown routes
 app.use("*", (req, res) => {

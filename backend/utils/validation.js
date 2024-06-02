@@ -45,6 +45,19 @@ const ticketValidationSchema = z.object({
   status: z.enum(["open", "closed"]).default("open"),
 });
 
+const meetingValidationSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  startTime: z.date().refine(date => date > new Date(), "Start time must be in the future"),
+  endTime: z.date().refine((date, ctx) => {
+    if (ctx.parent.startTime && date <= ctx.parent.startTime) {
+      return false;
+    }
+    return true;
+  }, "End time must be after start time"),
+  attendees: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid attendee ID")).optional(),
+});
+
 
 module.exports = {
   userValidationSchema,
@@ -54,4 +67,6 @@ module.exports = {
   userAuthValidationSchema,
 
   ticketValidationSchema,
+
+  meetingValidationSchema,
 };
