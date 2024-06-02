@@ -40,7 +40,7 @@ export default function ViewTickets({ user }) {
   const ticketsToShow = showMyTicket ? userTickets : employeesTickets;
 
   return (
-    <article className='w-[90%] md:mx-0 mx-auto sm:px-8 px-2'>
+    <article className='w-[90%] md:mx-0 mx-auto sm:p-8 p-2'>
       <div className="flex justify-start gap-2 mb-6">
 
         {user?.role === "admin" ? (
@@ -58,10 +58,10 @@ export default function ViewTickets({ user }) {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="table">
+        <table className="table table-zebra">
           {/* head */}
           <thead>
-            <tr className="bg-gray-300">
+            <tr className="">
               <th>#</th>
               <th>Title</th>
               <th>Description</th>
@@ -72,12 +72,14 @@ export default function ViewTickets({ user }) {
           </thead>
           <tbody>
             {ticketsToShow?.map((ticket, index) => (
-              <tr key={ticket._id} className={`${ticket.type === "emergency" ? "bg-red-50" : ticket.type === "report" ? "bg-blue-50" : "bg-green-50"}`}>
+              <tr key={ticket._id}>
                 <th>{index + 1}</th>
                 <td>{ticket.title} </td>
                 <td>{ticket.description.slice(0, 100)}</td>
-                <td>{ticket.type}</td>
-                <td>{ticket.status}</td>
+                <td className={`${ticket.type === "emergency" ? "text-red-500" : ticket.type === "report" ? "text-blue-500" : "text-green-500"} capitalize`}>{ticket.type}</td>
+                <td className="capitalize">
+                  <span className={`p-1 rounded-lg ${ticket.status === "closed" ? "bg-blue-300" : "bg-red-300"} text-neutral font-bold`}>{ticket.status}</span>
+                </td>
                 <td className='flex gap-4 items-center'>
                   {/* Open the modal using document.getElementById('ID').showModal() method */}
                   <button className='flex gap-1 items-center tooltip border border-gray-500 rounded-full w-8 h-8 i justify-center' data-tip="Edit" aria-label='Edit' onClick={() => handleModalOpen(ticket)}>

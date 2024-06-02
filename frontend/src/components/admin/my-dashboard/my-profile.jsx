@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { showInputLabel } from "../../../lib/form";
 
-export default function MyProfile({ user, handleUpdateUser }) {
+export default function MyProfile({ user, handleUpdateUser, handleViewMeeting }) {
 
 
   const userFirstName = user?.name?.firstName;
@@ -84,6 +84,11 @@ export default function MyProfile({ user, handleUpdateUser }) {
             </div>
           </dialog>
         </div>
+      </div>
+
+      <div className="card-body flex-row justify-between items-center mt-0 pt-0">
+        <button className="btn btn-success cursor-pointer flex-1 text-center" onClick={() => handleViewMeeting(false)}>Tickets</button>
+        <button className="btn btn-success cursor-pointer flex-1 text-center" onClick={() => handleViewMeeting(true)}>Meetings</button>
       </div>
     </div>
   )

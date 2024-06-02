@@ -39,7 +39,7 @@ export default function NewTicketForm() {
   };
 
   return (
-    <form className="bg-white shadow-md rounded sm:pe-8 pe-2 mb-4 w-[90%] md:mx-0 mx-auto" onSubmit={handleAddTicket} noValidate>
+    <form className="bg-white shadow-md rounded sm:p-8 p-2 mb-4 w-[90%] md:mx-0 mx-auto" onSubmit={handleAddTicket} noValidate>
       <h3 className="mb-6 underline">Add New Ticket</h3>
 
       <div className="mb-6 relative">
@@ -71,7 +71,7 @@ export default function NewTicketForm() {
 
       <div className="mb-6 relative">
         <select
-          className="select select-bordered w-full max-w-xs"
+          className="select select-bordered w-full"
           name="type"
           value={newTicketLocal.type}
           onChange={handleInputChange}
@@ -82,7 +82,7 @@ export default function NewTicketForm() {
         </select>
       </div>
 
-      <button type="submit" disabled={loading} className="text-white bg-secondary hover:bg-secondary/90 focus:outline-none font-medium rounded-full text-sm w-full px-5 py-3 text-center mt-2 btn disabled:bg-secondary disabled:text-white">
+      <button type="submit" disabled={loading} className="text-primary-content bg-primary hover:bg-primary/90 focus:outline-none font-medium rounded-full text-sm w-full px-5 py-3 text-center mt-2 btn disabled:bg-primary disabled:text-primary-content">
         Add Ticket
         {loading ? <span className="loading loading-spinner loading-sm ms-1"></span> : null}
       </button>

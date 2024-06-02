@@ -51,7 +51,7 @@ export default function NewEmployeeForm() {
   };
 
   return (
-    <form className="bg-white shadow-md rounded sm:pe-8 pe-2 mb-4 md:w-1/3 w-[90%] md:mx-0 mx-auto" onSubmit={(e) => handleAddEmployee(e, newEmployeeLocal)} noValidate>
+    <form className="bg-white shadow-md rounded sm:p-8 p-2 mb-4 md:w-1/3 w-[90%] md:mx-0 mx-auto" onSubmit={(e) => handleAddEmployee(e, newEmployeeLocal)} noValidate>
       <h3 className="mb-6 underline">Add New Employee</h3>
 
       <div className="grid gap-6 md:grid-cols-2">
@@ -136,7 +136,7 @@ export default function NewEmployeeForm() {
         <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Password</span>
       </div>
 
-      <button type="submit" disabled={loading} className="text-white bg-secondary hover:bg-secondary/90 focus:outline-none font-medium rounded-full text-sm w-full px-5 py-3 text-center mt-2 btn disabled:bg-secondary disabled:text-white">
+      <button type="submit" disabled={loading} className="text-primary-content bg-primary hover:bg-primary/90 focus:outline-none font-medium rounded-full text-sm w-full px-5 py-3 text-center mt-2 btn disabled:bg-primary disabled:text-primary-content">
         Add Employee
         {loading ? <span className="loading loading-spinner loading-sm ms-1"></span> : null}
       </button>

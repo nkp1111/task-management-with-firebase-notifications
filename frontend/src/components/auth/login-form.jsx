@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 
 import { showInputLabel } from "../../lib/form.js";
 import EyeIcon from "../../assets/open-eye.svg"
@@ -79,7 +79,7 @@ export default function LoginForm({ handleFormChange }) {
 
         <button type="submit"
           disabled={loading}
-          className="text-white bg-secondary hover:bg-secondary/90 focus:outline-none font-medium rounded-full text-sm w-full px-5 py-3 text-center mt-2 btn"
+          className="text-primary-content bg-primary hover:bg-primary/90 focus:outline-none font-medium rounded-full text-sm w-full px-5 py-3 text-center mt-2 btn"
         >
           Sign In
           {loading ? <span className="loading loading-spinner loading-sm ms-1"></span> : null}

@@ -10,6 +10,7 @@ import { AuthProvider } from "./context/auth-context"
 import { UserProvider } from "./context/user-context";
 import { EmployeeProvider } from "./context/employee-context";
 import { TicketProvider } from "./context/ticket-context"
+import { MeetingProvider } from "./context/meeting-context";
 
 
 export default function AllRoutes() {
@@ -20,15 +21,17 @@ export default function AllRoutes() {
           <UserProvider>
             <EmployeeProvider>
               <TicketProvider>
-                <Routes>
-                  <Route path="/" element={<Auth />} />
+                <MeetingProvider>
+                  <Routes>
+                    <Route path="/" element={<Auth />} />
 
-                  {/* Checks if user logged in or not */}
-                  <Route element={<RequireAuth />}>
-                    {/* protected routes defined here  */}
-                    <Route path="/admin" element={<Admin />} />
-                  </Route>
-                </Routes>
+                    {/* Checks if user logged in or not */}
+                    <Route element={<RequireAuth />}>
+                      {/* protected routes defined here  */}
+                      <Route path="/admin" element={<Admin />} />
+                    </Route>
+                  </Routes>
+                </MeetingProvider>
               </TicketProvider>
             </EmployeeProvider>
           </UserProvider>

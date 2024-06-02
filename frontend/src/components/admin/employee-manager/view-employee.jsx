@@ -19,7 +19,7 @@ export default function ViewEmployee() {
   });
 
   return (
-    <article className='md:w-2/3 w-[90%] md:mx-0 mx-auto sm:px-8 px-2'>
+    <article className='md:w-2/3 w-[90%] md:mx-0 mx-auto sm:p-8 p-2'>
       <h3 className='mb-6 underline'>Employee List</h3>
 
       <div className="overflow-x-auto">
