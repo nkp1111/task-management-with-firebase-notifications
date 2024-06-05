@@ -8,6 +8,7 @@ const {
   userUpdateValidationSchema,
 } = require("../utils/validation");
 
+const { validationErrorMessage } = require("../utils/format/error-msg");
 
 async function hashPasswords(employees) {
   return Promise.all(employees.map(async (employee) => {
@@ -32,7 +33,7 @@ exports.createEmployees = async (req, res, next) => {
     const { error } = objectIdValidationSchema.safeParse(userId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error, "User Id: ") });
     }
 
     // validate user input
@@ -84,7 +85,7 @@ exports.getEmployees = async (req, res, next) => {
     const { error } = objectIdValidationSchema.safeParse(userId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error, "User Id: ") });
     }
     const employees = await User.find({ adminId: userId });
     return res.status(StatusCodes.OK)
@@ -106,13 +107,13 @@ exports.deleteEmployee = async (req, res, next) => {
     const { error } = objectIdValidationSchema.safeParse(userId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error, "User Id: ") });
     }
 
     const { error: employeeIdError } = objectIdValidationSchema.safeParse(employeeId);
     if (employeeIdError) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error: employeeIdError });
+        .json({ error: validationErrorMessage(employeeIdError, "Employee Id: ") });
     }
 
     // delete employee
@@ -143,19 +144,19 @@ exports.updateEmployee = async (req, res, next) => {
     const { error } = objectIdValidationSchema.safeParse(userId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error, "User Id: ") });
     }
     // validate employee id
     const { error: employeeIdError } = objectIdValidationSchema.safeParse(employeeId);
     if (employeeIdError) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error: employeeIdError });
+        .json({ error: validationErrorMessage(employeeIdError, "Employee Id: ") });
     }
     // validate update data
     const { error: employeeDataError, data } = userUpdateValidationSchema.partial().safeParse(req.body);
     if (employeeDataError) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error: employeeDataError });
+        .json({ error: validationErrorMessage(employeeDataError) });
     }
     // update employee
     const result = await User.findOneAndUpdate({ adminId: userId, _id: employeeId }, { ...data });
@@ -178,13 +179,13 @@ exports.getEmployee = async (req, res, next) => {
     const { error } = objectIdValidationSchema.safeParse(userId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error, "User Id: ") });
     }
 
     const { error: employeeIdError } = objectIdValidationSchema.safeParse(employeeId);
     if (employeeIdError) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error: employeeIdError });
+        .json({ error: validationErrorMessage(employeeIdError, "Employee Id: ") });
     }
 
     // find employee

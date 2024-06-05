@@ -2,6 +2,9 @@ const { Meeting, User } = require("../model");
 const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 const { meetingValidationSchema, objectIdValidationSchema } = require("../utils/validation");
 
+const { validationErrorMessage } = require("../utils/format/error-msg");
+
+
 /**
  * @desc creates a new meeting
  * @method POST /api/meeting
@@ -18,7 +21,7 @@ exports.createMeeting = async (req, res, next) => {
     // Validate user input
     const { error, data } = meetingValidationSchema.safeParse(req.body);
     if (error) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ error });
+      return res.status(StatusCodes.BAD_REQUEST).json({ error: validationErrorMessage(error) });
     }
 
     const meetingInfo = { ...data, createdBy: userId };
@@ -71,7 +74,7 @@ exports.deleteMeeting = async (req, res, next) => {
     const { meetingId = "" } = req.params;
     const { error } = objectIdValidationSchema.safeParse(meetingId);
     if (error) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ error });
+      return res.status(StatusCodes.BAD_REQUEST).json({ error: validationErrorMessage(error, "Meeting Id: ") });
     }
 
     // Find user
@@ -127,14 +130,14 @@ exports.updateMeeting = async (req, res, next) => {
     const { error } = objectIdValidationSchema.safeParse(meetingId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error, "Meeting Id: ") });
     }
 
     // Validate user input
     const { error: meetingDataError, data } = meetingValidationSchema.safeParse(req.body);
     if (meetingDataError) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error: meetingDataError });
+        .json({ error: validationErrorMessage(meetingDataError) });
     }
 
     // Find user
@@ -190,7 +193,7 @@ exports.getMeetingById = async (req, res, next) => {
     const { error } = objectIdValidationSchema.safeParse(meetingId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error, "Meeting Id: ") });
     }
 
     // Find user

@@ -11,6 +11,8 @@ const {
 const { loginUserUsingJWT } = require("../utils/auth/login");
 const { logoutUserUsingJWT } = require("../utils/auth/logout");
 
+const { validationErrorMessage } = require("../utils/format/error-msg");
+
 
 /**
  * @desc creates a new user
@@ -25,7 +27,7 @@ exports.createUser = async (req, res, next) => {
     const { error, data } = userValidationSchema.safeParse(req.body);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error) });
     }
     // check if user exists
     const existedUser = await User.findOne({ email: data.email });
@@ -82,7 +84,7 @@ exports.deleteUser = async (req, res, next) => {
     const { error } = objectIdValidationSchema.safeParse(userId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error, "User Id: ") });
     }
 
     // delete user
@@ -114,13 +116,13 @@ exports.updateUser = async (req, res, next) => {
     const idValidationResult = objectIdValidationSchema.safeParse(userId);
     if (idValidationResult.error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error: idValidationResult.error });
+        .json({ error: validationErrorMessage(idValidationResult.error, "User Id: ") });
     }
     // validate user input
     const { error, data } = userUpdateValidationSchema.partial().safeParse(req.body);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error) });
     }
 
     // delete user
@@ -145,7 +147,7 @@ exports.getUser = async (req, res, next) => {
     const { error } = objectIdValidationSchema.safeParse(userId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error, "User Id: ") });
     }
     // find user
     const user = await User.findOne({ _id: userId })
@@ -168,7 +170,7 @@ exports.loginUser = async (req, res, next) => {
     const { error, data } = userAuthValidationSchema.safeParse(req.body);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error) });
     }
     // find user
     const user = await User.findOne({ email: data.email }).select("+password");

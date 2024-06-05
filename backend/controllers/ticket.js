@@ -6,6 +6,8 @@ const {
   objectIdValidationSchema,
 } = require("../utils/validation");
 
+const { validationErrorMessage } = require("../utils/format/error-msg");
+
 
 /**
  * @desc creates a new ticket
@@ -21,7 +23,7 @@ exports.createTicket = async (req, res, next) => {
     const { error, data } = ticketValidationSchema.safeParse(req.body);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error) });
     }
     const ticketInfo = { ...data, createdBy: userId };
 
@@ -73,7 +75,7 @@ exports.deleteTicket = async (req, res, next) => {
     const { error } = objectIdValidationSchema.safeParse(ticketId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error, "Ticket Id: ") });
     }
 
     // find user
@@ -136,13 +138,13 @@ exports.updateTicket = async (req, res, next) => {
     const { error } = objectIdValidationSchema.safeParse(ticketId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error, "Ticket Id: ") });
     }
     // validate user input
     const { error: ticketDataError, data } = ticketValidationSchema.safeParse(req.body);
     if (ticketDataError) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error: ticketDataError });
+        .json({ error: validationErrorMessage(ticketDataError) });
     }
 
     // find user
@@ -205,7 +207,7 @@ exports.getTicketById = async (req, res, next) => {
     const { error } = objectIdValidationSchema.safeParse(ticketId);
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST)
-        .json({ error });
+        .json({ error: validationErrorMessage(error, "Ticket Id: ") });
     }
 
     // find user
