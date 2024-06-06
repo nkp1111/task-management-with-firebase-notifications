@@ -1,9 +1,12 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../../context/user-context";
 import Admin from "../../components/admin";
 
 export default function AdminPage() {
-  const { user } = useContext(UserContext);
+  const { user, setUserFromLocalStorage } = useContext(UserContext);
+  useEffect(() => {
+    setUserFromLocalStorage()
+  }, []);
 
   return (
     <main className="h-screen overflow-y-auto">
