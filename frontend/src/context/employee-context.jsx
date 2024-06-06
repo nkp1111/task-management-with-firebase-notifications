@@ -71,7 +71,7 @@ export const EmployeeProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error, 'Employees fetch error')
-      notify(typeof error === "string" ? error : (error.error || "Employees fetch failed"), "error");
+      if (showAlert) notify(typeof error === "string" ? error : (error.error || "Employees fetch failed"), "error");
     }
   };
 
@@ -91,6 +91,7 @@ export const EmployeeProvider = ({ children }) => {
       const result = await deleteEmployee(userId, employeeId);
       if (result?.message) {
         notify(result.message, "success");
+        setEmployees(pre => pre.filter(emp => emp._id !== employeeId));
       }
     } catch (error) {
       console.log(error, 'Employee delete error')

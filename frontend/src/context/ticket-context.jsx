@@ -8,7 +8,10 @@ import {
   updateTicket,
   getTicketById,
 } from "../service/ticket"
-
+import {
+  clearValueFromLocalStorage,
+} from "../lib/store"
+import { localStorageUserKey } from "../constant/auth"
 
 export const TicketContext = createContext();
 
@@ -26,7 +29,7 @@ export const TicketProvider = ({ children }) => {
       }
     } catch (error) {
       // console.log(error, 'login error')
-      notify(typeof error === "string" ? error : (error.error || "User login failed"), "error");
+      notify(typeof error === "string" ? error : (error.error || "Create ticket failed"), "error");
     }
   }
 
@@ -46,7 +49,7 @@ export const TicketProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      notify(typeof error === "string" ? error : (error.error || "User logout failed"), "error");
+      notify(typeof error === "string" ? error : (error.error || "ticket fetch failed"), "error");
     }
   }
 
@@ -67,7 +70,11 @@ export const TicketProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      notify(typeof error === "string" ? error : (error.error || "User logout failed"), "error");
+      if (error?.message === "Unauthorized") {
+        clearValueFromLocalStorage(localStorageUserKey)
+      }
+      if (showAlert) notify(typeof error === "string" ? error : (error.error || "Tickets fetch failed"), "error");
+      console.log(error, 'get tickets')
     }
   }
 
@@ -84,7 +91,7 @@ export const TicketProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      notify(typeof error === "string" ? error : (error.error || "User logout failed"), "error");
+      notify(typeof error === "string" ? error : (error.error || "Ticket delete failed"), "error");
     }
   }
 
@@ -107,7 +114,7 @@ export const TicketProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      notify(typeof error === "string" ? error : (error.error || "User logout failed"), "error");
+      notify(typeof error === "string" ? error : (error.error || "Ticket update failed"), "error");
     }
   }
 

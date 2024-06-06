@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { createContext } from 'react';
 
 import { notify } from "../lib/alert.js";
 import {
@@ -7,7 +7,6 @@ import {
 } from "../service/auth"
 import {
   storeValueInLocalStorage,
-  getValueFromLocalStorage,
   clearValueFromLocalStorage,
 } from "../lib/store"
 import { localStorageUserKey } from "../constant/auth"

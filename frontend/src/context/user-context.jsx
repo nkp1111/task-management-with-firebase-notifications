@@ -70,9 +70,13 @@ export const UserProvider = ({ children }) => {
   }
 
   useEffect(() => {
+    setUserFromLocalStorage()
+  }, []);
+
+  const setUserFromLocalStorage = () => {
     const user = getValueFromLocalStorage(localStorageUserKey)
     if (user) setUser(user);
-  }, []);
+  }
 
   return (
     <UserContext.Provider
@@ -81,6 +85,7 @@ export const UserProvider = ({ children }) => {
         setUser,
         handleCreateUser,
         handleUpdateUser,
+        setUserFromLocalStorage,
       }}>
       {children}
     </UserContext.Provider>
