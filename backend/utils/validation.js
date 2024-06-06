@@ -45,17 +45,32 @@ const ticketValidationSchema = z.object({
   status: z.enum(["open", "closed"]).default("open"),
 });
 
+const dateSchema = z.union([
+  z.string().transform((str) => new Date(str)),
+  z.date(),
+]);
+
 const meetingValidationSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  startTime: z.date().refine(date => date > new Date(), "Start time must be in the future"),
-  endTime: z.date().refine((date, ctx) => {
-    if (ctx.parent.startTime && date <= ctx.parent.startTime) {
-      return false;
-    }
-    return true;
-  }, "End time must be after start time"),
-  attendees: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid attendee ID")).optional(),
+  startTime: dateSchema,
+  endTime: dateSchema,
+  attendees: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid attendee ID")).min(1, "There must be at least one attendee for meeting."),
+}).superRefine((data, ctx) => {
+  if (data.startTime <= new Date()) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["startTime"],
+      message: "Meeting start time must be in the future",
+    });
+  }
+  if (data.endTime <= data.startTime) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["endTime"],
+      message: "Meeting end time must be after start time",
+    });
+  }
 });
 
 

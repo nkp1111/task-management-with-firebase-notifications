@@ -27,6 +27,8 @@ const MeetingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   }],
+}, {
+  timestamps: true,
 });
 
 exports.Meeting = model('Meeting', MeetingSchema);
