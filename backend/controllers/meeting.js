@@ -4,6 +4,8 @@ const { meetingValidationSchema, objectIdValidationSchema } = require("../utils/
 
 const { validationErrorMessage } = require("../utils/format/error-msg");
 
+const { addNewNotification } = require("../utils/notification/index")
+
 
 /**
  * @desc creates a new meeting
@@ -26,6 +28,13 @@ exports.createMeeting = async (req, res, next) => {
 
     const meetingInfo = { ...data, createdBy: userId };
     const meeting = await Meeting.create(meetingInfo);
+
+    // create new notification
+    await addNewNotification(
+      userId,
+      meeting,
+      "meeting",
+    )
 
     return res.status(StatusCodes.CREATED)
       .json({ message: "Meeting created successfully.", meeting });
@@ -158,6 +167,14 @@ exports.updateMeeting = async (req, res, next) => {
     if (meeting.createdBy.toString() === userId) {
       // Update meeting
       await Meeting.updateOne({ _id: meetingId }, { ...data });
+
+      // create new notification
+      await addNewNotification(
+        userId,
+        meeting,
+        "meeting",
+      )
+
       return res.status(StatusCodes.OK)
         .json({ message: "Meeting updated successfully" });
     } else if (meeting.createdBy.toString() !== userId && user.role === "admin") {
@@ -165,6 +182,15 @@ exports.updateMeeting = async (req, res, next) => {
       const meetingOwner = await User.findOne({ _id: meeting.createdBy });
       if (meetingOwner.role === "employee" && meetingOwner.adminId === userId) {
         await Meeting.updateOne({ _id: meetingId }, { ...data });
+
+        // create new notification
+        await addNewNotification(
+          userId,
+          meeting,
+          "meeting",
+        )
+
+
         return res.status(StatusCodes.OK)
           .json({ message: "Meeting updated successfully" });
       } else {

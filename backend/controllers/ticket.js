@@ -28,6 +28,16 @@ exports.createTicket = async (req, res, next) => {
     const ticketInfo = { ...data, createdBy: userId };
 
     const ticket = await Ticket.create(ticketInfo);
+
+
+    // create new notification
+    await addNewNotification(
+      userId,
+      ticket,
+      "ticket",
+    )
+
+
     return res.status(StatusCodes.CREATED)
       .json({ message: "Ticket created successfully.", ticket });
   } catch (error) {
@@ -166,6 +176,15 @@ exports.updateTicket = async (req, res, next) => {
       // update ticket
       const updateResult = await Ticket.updateOne({ _id: ticketId }, { ...data });
       // console.log("ticket update result", updateResult);
+
+      // create new notification
+      await addNewNotification(
+        userId,
+        ticket,
+        "ticket",
+      )
+
+
       return res.status(StatusCodes.OK)
         .json({ message: "Ticket updated successfully" });
     }
@@ -177,6 +196,15 @@ exports.updateTicket = async (req, res, next) => {
         // employee ticket confirmed
         const updateResult = await Ticket.updateOne({ _id: ticketId }, { ...data });
         // console.log("ticket update result", updateResult);
+
+        // create new notification
+        await addNewNotification(
+          userId,
+          ticket,
+          "ticket",
+        )
+
+
         return res.status(StatusCodes.OK)
           .json({ message: "Ticket updated successfully" });
       }

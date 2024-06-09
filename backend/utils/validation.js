@@ -1,4 +1,5 @@
 const { z } = require("zod");
+const { Types } = require("mongoose")
 
 
 const objectIdValidationSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId");
@@ -74,6 +75,31 @@ const meetingValidationSchema = z.object({
 });
 
 
+const objectIdSchema = z.custom((val) => Types.ObjectId.isValid(val), {
+  message: "Invalid ObjectId",
+});
+
+const notificationValidationSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  body: z.string().min(1, "Description is required"),
+  image: z.string().optional().nullable(),
+  receivers: z.array(
+    z.any(),
+    // z.union(
+    //   z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid attendee ID"),
+    //   objectIdSchema,
+    // )
+  ).optional(),
+});
+
+const notificationUpdateValidationSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  body: z.string().min(1, "Description is required"),
+  image: z.string().optional().nullable(),
+});
+
+
+
 module.exports = {
   userValidationSchema,
   objectIdValidationSchema,
@@ -84,4 +110,7 @@ module.exports = {
   ticketValidationSchema,
 
   meetingValidationSchema,
+
+  notificationValidationSchema,
+  notificationUpdateValidationSchema,
 };
