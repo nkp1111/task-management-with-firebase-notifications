@@ -11,7 +11,7 @@ export default function Auth() {
     setLoginForm(pre => !pre);
   }
   return (
-    <main className="min-h-screen relative">
+    <main className="h-screen relative">
       <div className="absolute min-h-screen w-full">
         <img src={bgImage} className=" top-0 left-0 right-0 bottom-0 bg-opacity-50"></img>
       </div>
