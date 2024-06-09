@@ -11,6 +11,7 @@ const {
   EmployeeRouter,
   TicketRouter,
   MeetingRouter,
+  NotificationRouter,
 } = require("./routes");
 
 
@@ -46,6 +47,7 @@ app.use("/api/user/:userId/employees", EmployeeRouter); // employee routes
 app.use("/api/user", UserRouter); // user routes
 app.use("/api/ticket", TicketRouter); // ticket routes
 app.use("/api/meeting", MeetingRouter); // meeting routes
+app.use("/api/notification", NotificationRouter); // notification routes
 
 // handle unknown routes
 app.use("*", (req, res) => {
