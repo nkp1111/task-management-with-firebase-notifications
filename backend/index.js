@@ -33,10 +33,10 @@ app.use(cors(
   }
 ));
 
-app.use((req, res, next) => {
-  console.log(req.method, req.body, req.path)
-  next();
-})
+// app.use((req, res, next) => {
+//   console.log(req.method, req.body, req.path)
+//   next();
+// })
 
 // routes
 app.get("/", (req, res) => {

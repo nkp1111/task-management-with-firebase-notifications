@@ -2,19 +2,27 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "../../context/user-context";
 import Admin from "../../components/admin";
 import { generateToken, messaging } from "../../lib/notifications/firebase";
-import { onMessage } from "firebase/messaging";
+import { onMessage, getMessaging } from "firebase/messaging";
+import { receiveNotification } from "../../service/notification"
+import { notify } from "../../lib/alert";
 
 export default function AdminPage() {
   const { user, setUserFromLocalStorage } = useContext(UserContext);
   useEffect(() => {
     setUserFromLocalStorage()
-    generateToken().then(token => {
+    generateToken().then(async token => {
       if (token) {
         // fetch notifications
+        const result = await receiveNotification(token);
+        // console.log('Receiving notification:', result);
       }
     })
     onMessage(messaging, (payload) => {
-      console.log(payload, "receiving message");
+      if (payload && payload.data) {
+        const { title, body, icon } = payload.data;
+        notify(body.slice(0, 50) + "...", "success")
+      }
+      // console.log(payload, "receiving message");
     })
   }, []);
 

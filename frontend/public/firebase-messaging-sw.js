@@ -36,3 +36,36 @@ messaging.onBackgroundMessage((payload) => {
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
+
+
+
+
+
+
+
+
+
+// fetch('http://localhost:3000/api/firebase-config')
+//   .then(response => response.json())
+//   .then(firebaseConfig => {
+//     // Initialize the Firebase app in the service worker with the fetched config
+//     firebase.initializeApp(firebaseConfig);
+
+//     // Retrieve an instance of Firebase Messaging
+//     const messaging = firebase.messaging();
+
+//     // Handle background messages
+//     messaging.onBackgroundMessage((payload) => {
+//       console.log('[firebase-messaging-sw.js] Received background message', payload);
+//       // Customize notification here
+//       const notificationTitle = payload.notification.title;
+//       const notificationOptions = {
+//         body: payload.notification.body,
+//         icon: payload.notification.image,
+//       };
+//       self.registration.showNotification(notificationTitle, notificationOptions);
+//     });
+//   })
+//   .catch(error => {
+//     console.error('Error fetching Firebase config:', error);
+//   });

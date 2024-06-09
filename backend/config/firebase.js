@@ -45,7 +45,7 @@ exports.sendNotification = async (registrationToken, message) => {
   admin.messaging().send(payload)
     .then((response) => {
       // Response is a message ID string.
-      console.log('Successfully sent message:', response);
+      // console.log('Successfully sent message:', response);
     })
     .catch((error) => {
       console.log('Error sending message:', error);

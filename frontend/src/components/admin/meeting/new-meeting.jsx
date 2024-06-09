@@ -126,35 +126,38 @@ export default function NewMeeting({ user }) {
           />
         </div>
 
-        <div className="mb-6 relative">
-          <details className="dropdown w-full">
-            <summary className="m-1 btn btn-block">Attendees</summary>
-            <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-full">
-              {employees.map(emp => (
-                <li key={emp._id} className={`hover:bg-gray-100 focus:bg-gray-200 p-2 cursor-pointer ${newMeetingLocal.attendees.includes(emp._id) ? "bg-blue-300 hover:bg-blue-400 focus:bg-blue-500" : "bg-inherit"}`}
-                  onClick={() => handleAttendeesChange(emp._id)}>
-                  {emp?.name?.firstName + " " + emp?.name?.lastName} ({emp.email})
-                </li>
-              ))}
-            </ul>
-          </details>
+        {employees && employees.length > 0 ? (
+          <div className="mb-6 relative">
+            <details className="dropdown w-full">
+              <summary className="m-1 btn btn-block">Attendees</summary>
+              <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-full">
+                {employees.map(emp => (
+                  <li key={emp._id} className={`hover:bg-gray-100 focus:bg-gray-200 p-2 cursor-pointer ${newMeetingLocal.attendees.includes(emp._id) ? "bg-blue-300 hover:bg-blue-400 focus:bg-blue-500" : "bg-inherit"}`}
+                    onClick={() => handleAttendeesChange(emp._id)}>
+                    {emp?.name?.firstName + " " + emp?.name?.lastName} ({emp.email})
+                  </li>
+                ))}
+              </ul>
+            </details>
 
-          <ul className="p-2 shadow max-h-64 overflow-y-auto z-[1] bg-base-100 rounded-box w-full">
-            {newMeetingLocal.attendees.map(empId => {
-              const employeeData = employees.find(emp => emp._id === empId);
-              const employeeName = employeeData?.name?.firstName + " " + employeeData?.name?.lastName;
-              return (
-                <li
-                  key={employeeData._id}
-                  className={`hover:bg-red-100 focus:bg-red-200 px-2 cursor-pointer group flex items-center transition-all duration-500 ease-out`}
-                  onClick={() => handleAttendeesChange(employeeData._id)}>
-                  <span className="inline-block py-2">{employeeName} ({employeeData.email})</span>
-                  <span className={`group-hover:inline-block ms-auto hidden text-2xl transition-all duration-500 ease-out`}>&times;</span>
-                </li>
-              )
-            })}
-          </ul>
-        </div>
+            <ul className="p-2 shadow max-h-64 overflow-y-auto z-[1] bg-base-100 rounded-box w-full">
+              {newMeetingLocal.attendees.map(empId => {
+                const employeeData = employees.find(emp => emp._id === empId);
+                const employeeName = employeeData?.name?.firstName + " " + employeeData?.name?.lastName;
+                return (
+                  <li
+                    key={employeeData._id}
+                    className={`hover:bg-red-100 focus:bg-red-200 px-2 cursor-pointer group flex items-center transition-all duration-500 ease-out`}
+                    onClick={() => handleAttendeesChange(employeeData._id)}>
+                    <span className="inline-block py-2">{employeeName} ({employeeData.email})</span>
+                    <span className={`group-hover:inline-block ms-auto hidden text-2xl transition-all duration-500 ease-out`}>&times;</span>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        ) : null}
+
 
         <button type="submit" disabled={loading} className="text-primary-content bg-primary hover:bg-primary/90 focus:outline-none font-medium rounded-full text-sm w-full px-5 py-3 text-center mt-2 btn disabled:bg-primary disabled:text-primary-content">
           Add Meeting

@@ -17,7 +17,7 @@ exports.isUserAuthorized = async (req, res, next) => {
 
     // to access
     const { userId: accessUserId, employeeId: accessEmployeeId, ticketId, meetingId } = req.params;
-    console.log(accessUserId, userId, role)
+    // console.log(accessUserId, userId, role)
     // console.log('validating ticket id', ticketId);
     // diff admin account
     if (role === "admin") {

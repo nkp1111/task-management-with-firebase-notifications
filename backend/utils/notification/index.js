@@ -10,8 +10,6 @@ exports.addNewNotification = async (createdBy, data, type) => {
   try {
     const { startTime = "", endTime = "", attendees = [], title = "" } = data;
 
-    console.log(data, 'on add new notification')
-
     const user = await User.findOne({ _id: createdBy });
     if (!user) return;
 

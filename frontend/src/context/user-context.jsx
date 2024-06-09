@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      console.log(error, 'user create error')
+      // console.log(error, 'user create error')
       notify(typeof error === "string" ? error : (error.error || "User create failed"), "error");
     }
   }

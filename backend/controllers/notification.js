@@ -174,8 +174,6 @@ exports.getNotification = async (req, res, next) => {
 exports.sendNotificationThroughFirebase = async (req, res, next) => {
   try {
     const { userId } = req;
-    const n = await Notification.find({});
-    console.log(n, 'notifications');
     const notifications = await Notification.find({
       $or: [
         { receivers: { $in: [userId] } },
@@ -190,7 +188,7 @@ exports.sendNotificationThroughFirebase = async (req, res, next) => {
     }
 
     notifications.forEach(async notification => {
-      console.log(notification.title)
+      // console.log(notification.title)
       try {
         await sendNotification(token, notification);
 
